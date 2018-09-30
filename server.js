@@ -26,6 +26,7 @@ if (mongoURL == null) {
 
   // If using env vars from secret from service binding  
   } else if (process.env.database_name) {
+	  console.log("db connected in else");
     mongoDatabase = process.env.database_name;
     mongoPassword = process.env.password;
     mongoUser = process.env.username;
