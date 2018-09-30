@@ -72,6 +72,7 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
 };
+///sample
 app.get('/process', function (req, res){
 	res.json(process);
 })
