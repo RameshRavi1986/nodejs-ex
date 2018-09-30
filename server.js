@@ -74,7 +74,7 @@ var initDb = function(callback) {
 };
 ///sample
 app.get('/process', function (req, res){
-	res.json(process);
+	res.json(process.env);
 })
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
