@@ -72,7 +72,9 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
 };
-
+app.get('/process', function (req, res){
+	res.json(process);
+})
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
