@@ -2,9 +2,19 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
-    
-Object.assign=require('object-assign')
+var _Receipts = require('./api/routes/Receipts');
 
+var _bodyParser = require('body-parser');
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+var _Receipts2 = _interopRequireDefault(_Receipts);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+Object.assign=require('object-assign')
+app.use(_bodyParser2.default.urlencoded({ extended: false }));
+app.use(_bodyParser2.default.json());
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
@@ -54,11 +64,13 @@ var db = null,
     dbDetails = new Object();
 
 var initDb = function(callback) {
+	console.log("url",mongoURL == null);
   if (mongoURL == null) return;
 
   var mongodb = require('mongodb');
+  console.log(mongodb);
   if (mongodb == null) return;
-
+  console.log(mongoURL);
   mongodb.connect(mongoURL, function(err, conn) {
     if (err) {
       callback(err);
@@ -72,17 +84,24 @@ var initDb = function(callback) {
 
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
+
+  mongoose.on("disconnected", function(){
+  console.log("disconnected");
+  })
 };
+
 ///sample
 app.get('/process', function (req, res){
 	res.json(process.env);
-})
+});
+app.use('/receipts', _Receipts2.default);
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   if (!db) {
-    initDb(function(err){});
+    initDb(function(err){console.log("error happened",err)});
   }
+  console.log("db",db);
   if (db) {
     var col = db.collection('counts');
     // Create a document with request IP and current time of request
